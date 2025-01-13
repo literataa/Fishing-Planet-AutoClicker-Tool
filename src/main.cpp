@@ -4,6 +4,8 @@
 #include <chrono>
 #include <cstdlib>
 #include <ctime>
+#include <tchar.h>
+#include <string>
 
 using namespace std;
 
@@ -52,8 +54,10 @@ void autoClickerBackward() {
     }
 }
 
+bool readSettingsFromRegistry(int &basePullDuration, int &baseStopDuration);
+bool writeSettingsToRegistry(int basePullDuration, int baseStopDuration);
+
 void showMenu(int &basePullDuration, int &baseStopDuration) {
-    system("cls");
     bool prevRunning = isAutoClickerRunning;
     bool prevBackward = isAutoClickerBackward;
     isAutoClickerRunning = false;
@@ -63,7 +67,7 @@ void showMenu(int &basePullDuration, int &baseStopDuration) {
     cout << "1. Change base pull duration (current: " << basePullDuration << " ms)\n";
     cout << "2. Change base stop duration (current: " << baseStopDuration << " ms)\n";
     cout << "3. Exit menu\n";
-    cout << "Enter your choice: ";
+    cout << "Enter your choice: " << flush;
     int choice;
     cin >> choice;
     switch (choice) {
@@ -76,6 +80,7 @@ void showMenu(int &basePullDuration, int &baseStopDuration) {
             cin >> baseStopDuration;
             break;
         case 3:
+            // Restore status
             if (prevRunning) isAutoClickerRunning = true;
             if (prevBackward) isAutoClickerBackward = true;
             return;
@@ -83,16 +88,51 @@ void showMenu(int &basePullDuration, int &baseStopDuration) {
             cout << "Invalid choice. Try again.\n";
     }
 
+    writeSettingsToRegistry(basePullDuration, baseStopDuration);
+
+    // Restore status
     if (prevRunning) isAutoClickerRunning = true;
     if (prevBackward) isAutoClickerBackward = true;
+}
+
+bool readSettingsFromRegistry(int &basePullDuration, int &baseStopDuration) {
+    HKEY hKey;
+    if (RegOpenKeyEx(HKEY_CURRENT_USER, _T("SOFTWARE\\MyClicker"), 0, KEY_READ, &hKey) == ERROR_SUCCESS) {
+        DWORD dataSize = sizeof(DWORD);
+        DWORD val1 = 0, val2 = 0;
+        RegQueryValueEx(hKey, _T("BasePull"), NULL, NULL, (LPBYTE)&val1, &dataSize);
+        RegQueryValueEx(hKey, _T("BaseStop"), NULL, NULL, (LPBYTE)&val2, &dataSize);
+        basePullDuration = (int)val1;
+        baseStopDuration = (int)val2;
+        RegCloseKey(hKey);
+        return true;
+    }
+    return false;
+}
+
+bool writeSettingsToRegistry(int basePullDuration, int baseStopDuration) {
+    HKEY hKey;
+    DWORD disp;
+    if (RegCreateKeyEx(HKEY_CURRENT_USER, _T("SOFTWARE\\MyClicker"), 0, NULL,
+        REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, &disp) == ERROR_SUCCESS) {
+        DWORD val1 = (DWORD)basePullDuration;
+        DWORD val2 = (DWORD)baseStopDuration;
+        RegSetValueEx(hKey, _T("BasePull"), 0, REG_DWORD, (BYTE*)&val1, sizeof(val1));
+        RegSetValueEx(hKey, _T("BaseStop"), 0, REG_DWORD, (BYTE*)&val2, sizeof(val2));
+        RegCloseKey(hKey);
+        return true;
+    }
+    return false;
 }
 
 int main() {
     srand(time(nullptr));
 
-    int basePullDuration = 2000; 
-    int baseStopDuration = 1100;
-    int margin = 10;
+    int basePullDuration = 2000;  // Durasi go (dalam milidetik)
+    int baseStopDuration = 1100;  // Durasi stop (dalam milidetik)
+    int margin = 10;  // Margin (dalam milidetik)
+
+    readSettingsFromRegistry(basePullDuration, baseStopDuration);
 
     while (true) {
         if (GetAsyncKeyState(VK_XBUTTON2) & 0x8000) {
@@ -132,6 +172,8 @@ int main() {
 
         this_thread::sleep_for(chrono::milliseconds(50));
     }
+
+    writeSettingsToRegistry(basePullDuration, baseStopDuration);
 
     return 0;
 }
