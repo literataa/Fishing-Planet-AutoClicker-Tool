@@ -53,7 +53,7 @@ void autoClickerBackward() {
 }
 
 void showMenu(int &basePullDuration, int &baseStopDuration) {
-    system("cls"); // Clear screen
+    system("cls");
     bool prevRunning = isAutoClickerRunning;
     bool prevBackward = isAutoClickerBackward;
     isAutoClickerRunning = false;
@@ -76,7 +76,6 @@ void showMenu(int &basePullDuration, int &baseStopDuration) {
             cin >> baseStopDuration;
             break;
         case 3:
-            // Restore status
             if (prevRunning) isAutoClickerRunning = true;
             if (prevBackward) isAutoClickerBackward = true;
             return;
@@ -84,7 +83,6 @@ void showMenu(int &basePullDuration, int &baseStopDuration) {
             cout << "Invalid choice. Try again.\n";
     }
 
-    // Restore status
     if (prevRunning) isAutoClickerRunning = true;
     if (prevBackward) isAutoClickerBackward = true;
 }
@@ -92,9 +90,9 @@ void showMenu(int &basePullDuration, int &baseStopDuration) {
 int main() {
     srand(time(nullptr));
 
-    int basePullDuration = 2000;  // Durasi go (dalam milidetik)
-    int baseStopDuration = 1100;  // Durasi stop (dalam milidetik)
-    int margin = 10;  // Margin (dalam milidetik)
+    int basePullDuration = 2000; 
+    int baseStopDuration = 1100;
+    int margin = 10;
 
     while (true) {
         if (GetAsyncKeyState(VK_XBUTTON2) & 0x8000) {
