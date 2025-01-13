@@ -1,4 +1,4 @@
-Fishing Planet Auto-Fisher
+# Fishing Planet Auto-Fisher
 A lightweight C++ program created to automate certain actions in Fishing Planet, specifically “Stop & Go” movements and fighting fish to improve efficiency. This code simulates mouse clicks to help you reel in fish more consistently.
 
 Features
