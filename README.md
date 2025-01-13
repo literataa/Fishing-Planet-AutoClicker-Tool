@@ -12,7 +12,7 @@ This repository contains a utility program designed to assist players in Fishing
 
 ### Prerequisites
 - Windows operating system
-- Visual Studio or any other C++ compiler
+- Visual Studio or any other C++ compiler (or just run the .exe file)
 
 ### Installation
 1. Clone the repository:
