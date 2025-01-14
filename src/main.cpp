@@ -14,12 +14,10 @@
 #include <iomanip>
 #include <hidusage.h>
 
-// Add this line to hide console
 #pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 
 using namespace std;
 
-// Global Variables
 HINSTANCE hInst;
 bool isAutoClickerRunning = false;
 bool isAutoClickerPaused = false;
@@ -40,7 +38,6 @@ bool isShortcutsEnabled = false;
 char pullDurationBuf[16] = {0};
 char stopDurationBuf[16] = {0};
 
-// Forward Declarations
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 void autoClickerThread();
 void autoClickerPausedThread();
@@ -223,13 +220,11 @@ void autoClicker(int basePullDuration, int baseStopDuration, int margin)
 {
     while (isAutoClickerRunning)
     {
-        // Hold left mouse button for pullDuration
         INPUT input = {0};
         input.type = INPUT_MOUSE;
         input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
         SendInput(1, &input, sizeof(INPUT));
-        
-        // Check if mode changed during hold
+
         if (!isAutoClickerRunning) {
             input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
             SendInput(1, &input, sizeof(INPUT));
@@ -237,12 +232,10 @@ void autoClicker(int basePullDuration, int baseStopDuration, int margin)
         }
         
         this_thread::sleep_for(chrono::milliseconds(basePullDuration));
-        
-        // Release left mouse button
+
         input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
         SendInput(1, &input, sizeof(INPUT));
-        
-        // Check if mode changed during stop
+
         if (!isAutoClickerRunning) break;
         
         this_thread::sleep_for(chrono::milliseconds(baseStopDuration));
@@ -271,19 +264,16 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg)
     {
-    // Add these new cases before the existing cases
     case WM_RBUTTONDOWN:
     case WM_RBUTTONUP:
-    case WM_MOUSEMOVE: // Add this to handle mouse movement while RMB is used
+    case WM_MOUSEMOVE:
         if (isCatchHolding) {
-            // Set a small delay to ensure the message is processed
-            Sleep(1);
-            // Re-assert left mouse button press
+            Sleep(1);s
             INPUT input = {0};
             input.type = INPUT_MOUSE;
             input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
             SendInput(1, &input, sizeof(INPUT));
-            return 0; // Handle the message
+            return 0;
         }
         break;
 
@@ -325,7 +315,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
         SetWindowTextA(hwndStopDuration, stopDurationBuf);
 
-        CreateWindowA("STATIC", "Stop and Go Key:",  // Changed from "Stop & Go Key:"
+        CreateWindowA("STATIC", "Stop and Go Key:",
                       WS_VISIBLE | WS_CHILD,
                       20, 150, 150, 20,
                       hwnd, NULL, NULL, NULL);
@@ -349,11 +339,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             180, 190, 100, 25,
             hwnd, (HMENU)5, hInst, NULL);
 
-        // Move Save Settings button below Catch key
         CreateWindowA(
             "BUTTON", "Save",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-            180, 230, 100, 25,  // New position: x=180, y=230
+            180, 230, 100, 25,
             hwnd, (HMENU)6,
             hInst, NULL);
 
@@ -372,9 +361,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         if (isSettingKey || !isShortcutsEnabled)
             break;
 
-        // If catch is holding, maintain left mouse button pressed after right click
         if (isCatchHolding) {
-            // Re-press left mouse button with a small delay to ensure it stays held
             INPUT input = {0};
             input.type = INPUT_MOUSE;
             input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
@@ -401,10 +388,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 INPUT input = {0};
                 input.type = INPUT_MOUSE;
 
-                // Handle Stop & Go key
                 if (vKey == stopGoKey)
                 {
-                    // First, clean up any existing catch state
                     if (isCatchHolding) {
                         isCatchHolding = false;
                         input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
@@ -423,20 +408,16 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                         SendInput(1, &input, sizeof(INPUT));
                     }
                 }
-                // Handle Catch key
                 else if (vKey == catchKey)
                 {
-                    // First, clean up existing Stop & Go state if needed
                     if (isAutoClickerRunning)
                     {
                         isAutoClickerRunning = false;
                         this_thread::sleep_for(chrono::milliseconds(50));
                     }
-
-                    // Toggle catch state
-                    isCatchHolding = !isCatchHolding;
                     
-                    // Apply the new state
+                    isCatchHolding = !isCatchHolding;
+
                     input.mi.dwFlags = isCatchHolding ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_LEFTUP;
                     SendInput(1, &input, sizeof(INPUT));
                     SetWindowTextA(hwndStatus, isCatchHolding ? "Catch Active" : "Inactive");
@@ -451,7 +432,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         int wmId = LOWORD(wParam);
         switch (wmId)
         {
-        case 1: // Start/Stop button
+        case 1:
             if (HIWORD(wParam) == BN_CLICKED)
             {
                 if (!isShortcutsEnabled)
@@ -468,14 +449,12 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 }
                 else
                 {
-                    // Clean up all states when stopping
                     isShortcutsEnabled = false;
                     isAutoClickerRunning = false;
                     isCatchHolding = false;
                     SetWindowTextA(hwndStartStop, "Start");
                     SetWindowTextA(hwndStatus, "Inactive");
                     
-                    // Release mouse button if it was held
                     INPUT input = {0};
                     input.type = INPUT_MOUSE;
                     input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
@@ -484,8 +463,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             }
             break;
 
-        // Add new save button handler
-        case 6: // Save Settings button
+        case 6:
             if (HIWORD(wParam) == BN_CLICKED)
             {
                 char pullBuf[16] = {0}, stopBuf[16] = {0};
