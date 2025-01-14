@@ -27,18 +27,18 @@ Other modes are currently under development and will be available in future upda
 ### **Installation Steps**
 1. **Clone the Repository:**
     ```sh
-    git clone https://github.com/literataa/AutoClickerWindows.git
+    git clone https://github.com/literataa/FishingPlanetAutoClickerTool.git
     ```
 2. **Open the Project:**
     - Navigate to the cloned repository directory.
-    - Open the solution file `AutoClickerWindows.sln` in Visual Studio.
+    - Open the solution file `main.cpp` in Visual Studio Code.
 
 3. **Build the Project:**
     - Select your desired build configuration (Debug/Release).
-    - Build the solution using `Build > Build Solution` or by pressing `Ctrl + Shift + B`.
+    - Build the solution using `Terminal > Run Build Task` or by pressing `Ctrl + Shift + B`.
 
 4. **Run the Application:**
-    - After a successful build, run the executable located in the `Release` or `Debug` folder.
+    - After a successful build, run the executable.
     - Alternatively, just run the `.exe` file provided in the repository.
 
 ### **Usage Guide**
