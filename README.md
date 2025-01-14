@@ -7,6 +7,8 @@ Fishing Planet Auto Clicker offers:
 - **Stop & Go Mode:** Automates the pull and stop actions with adjustable durations, perfect for simulating the rhythm of using a lure in Fishing Planet.
 - **Catch Mode:** Continuously holds the left mouse button to simulate holding the fishing rod.
 
+Other modes are currently under development and will be available in future updates.
+
 ## **Key Features**
 - **Stop & Go Mode:** Automates pull and stop actions with adjustable durations.
 - **Catch Mode:** Continuously holds the left mouse button for specific actions.
