@@ -21,7 +21,7 @@ Other modes are currently under development and will be available in future upda
 
 ### **Prerequisites**
 - **Operating System:** Windows 10 or later.
-- **Development Environment:** Visual Studio 2019 or later (for compiling the source code).
+- **Development Environment:** Visual Studio Code (for compiling the source code).
 - **Dependencies:** No external libraries are required beyond the standard Windows API.
 
 ### **Installation Steps**
