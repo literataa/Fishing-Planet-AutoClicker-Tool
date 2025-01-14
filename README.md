@@ -1,7 +1,11 @@
-# **Auto Clicker Windows**
+# **Fishing Planet Auto Clicker**
 
 ## **Overview**
-Auto Clicker Windows is a utility application designed to automate your mouse clicks on the Windows operating system. This tool is useful for various purposes, such as gaming, software testing, or other repetitive activities that require consistent mouse clicks.
+Fishing Planet Auto Clicker is a powerful utility designed to automate mouse clicks, specifically tailored for use with the Fishing Planet game on the Windows operating system. This tool enhances gameplay by automating repetitive mouse click actions, allowing players to focus on strategic aspects rather than manual clicking.
+
+Fishing Planet Auto Clicker offers:
+- **Stop & Go Mode:** Automates the pull and stop actions with adjustable durations, perfect for simulating the rhythm of using a lure in Fishing Planet.
+- **Catch Mode:** Continuously holds the left mouse button to simulate holding the fishing rod.
 
 ## **Key Features**
 - **Stop & Go Mode:** Automates pull and stop actions with adjustable durations.
@@ -33,6 +37,7 @@ Auto Clicker Windows is a utility application designed to automate your mouse cl
 
 4. **Run the Application:**
     - After a successful build, run the executable located in the `Release` or `Debug` folder.
+    - Alternatively, just run the `.exe` file provided in the repository.
 
 ### **Usage Guide**
 1. **Launching the Tool:**
