@@ -70,7 +70,7 @@ We welcome contributions from the community to enhance the functionality and fea
 
 2. **Clone Your Fork:**
     ```sh
-    git clone https://github.com/yourusername/AutoClickerWindows.git
+    git clone https://github.com/yourusername/FishingPlanetAutoClickerTool.git
     ```
 
 3. **Create a Feature Branch:**
